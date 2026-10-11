@@ -11,9 +11,6 @@
   <a href="https://github.com/ldy2330785100/Lidawn-Permission">
     <img src="https://img.shields.io/badge/Maintenance-Active-brightgreen" alt="Maintenance">
   </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-brightgreen" alt="License: CC-BY-NC-SA-4.0">
-  </a>
 </div>
 
 ## 📌 功能总览
@@ -73,10 +70,6 @@
     <img src="https://img.shields.io/github/v/release/ldy2330785100/Lidawn-Permission" alt="GitHub release">
   </a>
   <br>
-    <a href="https://github.com/ldy2330785100/Lidawn-Permission/commits/main">
-    <img src="https://img.shields.io/github/last-commit/ldy2330785100/Lidawn-Permission" alt="GitHub last commit">
-  </a>
-  <br>
   <a href="https://github.com/ldy2330785100/Lidawn-Permission/releases">
     <img src="https://img.shields.io/github/release-date/ldy2330785100/Lidawn-Permission" alt="Release date">
   </a>
@@ -91,6 +84,13 @@
 1. **项目性质**：本项目为个人技术练习与作品展示，非商业用途，不代表任何官方立场。
 2. **版权与许可**：
    - **代码**：本项目代码采用 **[CC-BY-NC-SA-4.0 License](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 开源。
+
+   - <div>
+     <a href="https://github.com/ldy2330785100/Lidawn-Permission/blob/main/LICENSE">
+       <img src="https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-brightgreen" alt="License: CC-BY-NC-SA-4.0">
+     </a>
+     </div>
+
    - **图标**：图标为原创，未经允许禁止商用；如需个人使用请告知作者。
 3. **责任限制**：作者不对因使用本项目代码或访问网站内容导致的任何损失承担责任。
 4. **隐私说明**：
