@@ -6,6 +6,8 @@
     <title>亦冬权限站-亦冬链迹</title>
     <link rel="icon" type="image/jpeg" href="https://ldy2330785100.github.io/Lidawn-Permission/avatar.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
     <style>
         * {
             margin: 0;
@@ -13,7 +15,6 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-
         :root {
             --primary: #00668B;
             --primary-dark: #005070;
@@ -22,7 +23,7 @@
             --emphasized-easing: cubic-bezier(0.2, 0.9, 0.4, 1.1);
             --standard-easing: cubic-bezier(0.2, 0, 0, 1);
             --bg: #f5f5f7;
-            --surface: rgba(255, 255, 255, 0.72);
+            --surface: rgba(255, 255, 255, 0.35);
             --surface-solid: #ffffff;
             --border: rgba(0, 0, 0, 0.08);
             --border-light: rgba(0, 0, 0, 0.04);
@@ -53,11 +54,10 @@
             --surface-rgb: 255, 255, 255;
             transition: background-color 0.25s, color 0.25s, border-color 0.25s;
         }
-
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #121217;
-                --surface: rgba(28, 27, 32, 0.78);
+                --surface: rgba(0, 0, 0, 0.25);
                 --surface-solid: #1c1b20;
                 --border: rgba(255, 255, 255, 0.08);
                 --border-light: rgba(255, 255, 255, 0.04);
@@ -83,11 +83,9 @@
                 --surface-rgb: 28, 27, 32;
             }
         }
-
         html {
             scroll-behavior: smooth;
         }
-
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: var(--bg);
@@ -100,28 +98,23 @@
             word-break: break-word;
             -webkit-overflow-scrolling: touch;
         }
-
         body.modal-open {
             overflow: hidden;
         }
-
         .site-header {
             text-align: center;
             padding: 24px 16px 8px;
             transform: translateZ(0);
         }
-
         .site-header h1 {
             font-size: clamp(1.3rem, 5vw, 1.7rem);
             font-weight: 700;
         }
-
         .site-header .subtitle {
             font-size: 0.85rem;
             color: var(--text3);
             margin-bottom: 8px;
         }
-
         .site-header .disclaimer {
             font-size: 0.7rem;
             color: var(--text3);
@@ -129,19 +122,18 @@
             margin: 0 auto;
             line-height: 1.5;
         }
-
         .disclaimer strong {
             color: var(--text2);
         }
-
         .navbar {
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(var(--surface-rgb), 0.68);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--border);
+            background: rgba(var(--surface-rgb), 0.35);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border-bottom: 1px solid var(--border-light);
+            border-radius: 0 0 12px 12px;
             padding: 8px 30px 8px 4px;
             display: flex;
             align-items: center;
@@ -152,17 +144,15 @@
             transform: translateZ(0);
             will-change: backdrop-filter;
         }
-
         .nav-tabs {
             display: flex;
             flex-wrap: nowrap;
-            gap: 4px;
+            gap: 2px;
             margin: 0 auto;
         }
-
         .nav-tab {
             flex-shrink: 0;
-            padding: 8px 16px;
+            padding: 7px 12px;
             border-radius: var(--btn-radius);
             font-size: 0.8rem;
             font-weight: 600;
@@ -179,30 +169,25 @@
             transform: translateZ(0);
             will-change: transform;
         }
-
         .nav-tab:hover {
             background: var(--tab-hover-bg);
             color: var(--text);
             transform: translateY(-2px);
         }
-
         .nav-tab:active {
             transform: scale(0.96);
             transition: transform 0.08s ease-out;
         }
-
         .nav-tab.active {
-            background: var(--tab-active-bg);
-            color: var(--text);
-            border-color: var(--primary);
+            background: var(--primary);
+            color: #ffffff;
+            border-color: transparent;
             font-weight: 700;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 3px 10px rgba(0, 102, 139, 0.3);
         }
-
         .nav-tab .tab-icon {
             font-size: 0.8rem;
         }
-
         .scroll-hint {
             position: absolute;
             right: 6px;
@@ -218,11 +203,9 @@
             border-radius: 40px;
             transition: opacity 0.15s;
         }
-
         .scroll-hint.hidden-hint {
             opacity: 0;
         }
-
         .page-wrapper {
             flex: 1;
             display: flex;
@@ -232,7 +215,6 @@
             will-change: background-color;
             position: relative;
         }
-
         .page-wrapper::before {
             content: '';
             position: absolute;
@@ -241,10 +223,9 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent);
+            background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15), transparent);
             z-index: 0;
         }
-
         .page-wrapper.critical-bg {
             background-color: var(--critical-bg);
         }
@@ -260,7 +241,6 @@
         .page-wrapper.minimal-bg {
             background-color: var(--minimal-bg);
         }
-
         .page-container {
             max-width: 1060px;
             width: 100%;
@@ -272,7 +252,6 @@
             position: relative;
             z-index: 2;
         }
-
         .page {
             display: none;
             opacity: 0;
@@ -281,18 +260,15 @@
             pointer-events: none;
             will-change: opacity, transform;
         }
-
         .page.active {
             display: block;
             opacity: 1;
             transform: translateX(0);
             pointer-events: auto;
         }
-
         .refresh-btn-container {
             margin-bottom: 16px;
         }
-
         .refresh-btn {
             display: inline-flex;
             align-items: center;
@@ -314,7 +290,6 @@
             transform: translateZ(0);
             will-change: transform;
         }
-
         .refresh-btn:hover {
             background: var(--btn-hover-bg);
             transform: translateY(-2px);
@@ -322,22 +297,20 @@
             color: var(--primary);
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
-
         .refresh-btn:active {
             transform: scale(0.97);
             transition: transform 0.08s ease-out;
         }
-
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
             margin-bottom: 24px;
         }
-
         .info-card {
             background: var(--surface);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(12px) saturate(1.3);
+            -webkit-backdrop-filter: blur(12px) saturate(1.3);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-sm);
             padding: 16px 18px;
@@ -351,18 +324,15 @@
             will-change: transform, opacity;
             transform-origin: center;
         }
-
         .info-card.card-visible {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
-
         .info-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
             border-color: rgba(0, 102, 139, 0.25);
         }
-
         .card-label {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -377,18 +347,15 @@
             width: max-content;
             transition: color 0.2s;
         }
-
         .card-label i {
             font-size: 0.8rem;
             width: 18px;
             text-align: center;
         }
-
         .card-label:hover {
             color: var(--primary);
             text-decoration: underline;
         }
-
         .card-value {
             font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
             font-size: 0.8rem;
@@ -404,19 +371,16 @@
             flex-wrap: wrap;
             overflow: visible;
         }
-
         .track-card {
             grid-column: 1 / -1;
             background: var(--track-bg);
             min-height: 5.625em;
         }
-
         .track-card .card-value {
             max-height: 140px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
-
         .expressive-loader {
             display: inline-flex;
             gap: 6px;
@@ -425,7 +389,6 @@
             padding: 4px 0;
             margin-left: 0;
         }
-
         .loader-dot {
             width: 8px;
             height: 8px;
@@ -436,16 +399,26 @@
             animation: springBounce 1.2s var(--spring-easing) infinite;
             will-change: transform, opacity;
         }
-
-        .loader-dot:nth-child(1) { animation-delay: 0s; }
-        .loader-dot:nth-child(2) { animation-delay: 0.15s; }
-        .loader-dot:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes springBounce {
-            0%, 100% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.4); opacity: 1; }
+        .loader-dot:nth-child(1) {
+            animation-delay: 0s;
         }
-
+        .loader-dot:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+        .loader-dot:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        @keyframes springBounce {
+            0%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.4);
+                opacity: 1;
+            }
+        }
         .mic-visualizer {
             width: 100%;
             height: 48px;
@@ -458,20 +431,17 @@
             transform: translateZ(0);
             will-change: transform;
         }
-
         @media (prefers-color-scheme: dark) {
             .mic-visualizer {
                 background: rgba(255, 255, 255, 0.04);
             }
         }
-
         .visualizer-canvas {
             display: block;
             width: 100%;
             height: 100%;
             border-radius: var(--radius-xs);
         }
-
         .mic-placeholder {
             width: 100%;
             height: 48px;
@@ -484,7 +454,6 @@
             font-size: 0.7rem;
             color: var(--text3);
         }
-
         .placeholder-bar {
             width: 4px;
             height: 6px;
@@ -493,21 +462,38 @@
             opacity: 0.4;
             animation: breath 1.8s ease-in-out infinite;
         }
-        .placeholder-bar:nth-child(2) { animation-delay: 0.2s; height: 10px; }
-        .placeholder-bar:nth-child(3) { animation-delay: 0.4s; height: 14px; }
-        .placeholder-bar:nth-child(4) { animation-delay: 0.6s; height: 10px; }
-        .placeholder-bar:nth-child(5) { animation-delay: 0.8s; height: 6px; }
-
-        @keyframes breath {
-            0%, 100% { opacity: 0.2; transform: scaleY(0.8); }
-            50% { opacity: 0.7; transform: scaleY(1.2); }
+        .placeholder-bar:nth-child(2) {
+            animation-delay: 0.2s;
+            height: 10px;
         }
-
+        .placeholder-bar:nth-child(3) {
+            animation-delay: 0.4s;
+            height: 14px;
+        }
+        .placeholder-bar:nth-child(4) {
+            animation-delay: 0.6s;
+            height: 10px;
+        }
+        .placeholder-bar:nth-child(5) {
+            animation-delay: 0.8s;
+            height: 6px;
+        }
+        @keyframes breath {
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scaleY(0.8);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scaleY(1.2);
+            }
+        }
         .db-meter {
             position: absolute;
             top: 4px;
             right: 8px;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             padding: 2px 6px;
             border-radius: 12px;
@@ -517,13 +503,11 @@
             pointer-events: none;
             z-index: 3;
         }
-
         .permission-section {
             margin-top: 12px;
             padding-top: 20px;
             border-top: 2px dashed var(--border);
         }
-
         .permission-section-header {
             font-weight: 700;
             font-size: 0.9rem;
@@ -533,13 +517,11 @@
             align-items: center;
             gap: 8px;
         }
-
         .auth-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
         }
-
         .auth-card {
             background: var(--surface);
             backdrop-filter: blur(20px);
@@ -556,12 +538,10 @@
             transition: opacity 0.45s var(--emphasized-easing), transform 0.45s var(--emphasized-easing), background 0.2s;
             will-change: transform, opacity;
         }
-
         .auth-card.card-visible {
             opacity: 1;
             transform: translateY(0) scale(1);
         }
-
         .auth-name {
             font-weight: 600;
             font-size: 0.85rem;
@@ -571,21 +551,17 @@
             width: max-content;
             transition: color 0.2s;
         }
-
         .auth-name i {
             margin-right: 6px;
         }
-
         .auth-name:hover {
             color: var(--primary);
             text-decoration: underline;
         }
-
         .auth-status {
             font-size: 0.7rem;
             color: var(--text3);
         }
-
         .auth-btn {
             padding: 6px 16px;
             border-radius: var(--btn-radius);
@@ -602,50 +578,41 @@
             transform: translateZ(0);
             will-change: transform;
         }
-
         .auth-btn:disabled {
             opacity: 0.55;
             cursor: not-allowed;
         }
-
         .auth-btn.hidden {
             display: none;
         }
-
         .auth-btn.granted {
             background: #c6f6d5;
             border-color: #38a169;
             color: #22543d;
         }
-
         .auth-btn.denied {
             background: #fed7d7;
             border-color: #e53e3e;
             color: #742a2a;
         }
-
         @media (prefers-color-scheme: dark) {
             .auth-btn.granted {
                 background: #1a3a2a;
                 color: #7ae0a0;
             }
-
             .auth-btn.denied {
                 background: #3a1a1a;
                 color: #fca5a5;
             }
         }
-
         .auth-btn:hover:not(:disabled) {
             border-color: var(--primary);
             color: var(--primary);
         }
-
         .auth-btn:active {
             transform: scale(0.96);
             transition: transform 0.08s ease-out;
         }
-
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -664,12 +631,10 @@
             transform: translateZ(0);
             will-change: opacity;
         }
-
         .modal-overlay.show {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-card {
             background: var(--modal-bg);
             border-radius: var(--radius);
@@ -683,11 +648,9 @@
             box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(4px);
         }
-
         .modal-overlay.show .modal-card {
             transform: scale(1);
         }
-
         .modal-close-x {
             position: absolute;
             top: 14px;
@@ -698,11 +661,9 @@
             line-height: 1;
             transition: transform 0.1s ease, color 0.2s;
         }
-
         .modal-close-x:active {
             transform: scale(0.92);
         }
-
         .repo-link-btn {
             display: inline-block;
             padding: 8px 20px;
@@ -719,20 +680,17 @@
             margin-bottom: 8px;
             transform: translateZ(0);
         }
-
         .repo-link-btn:hover {
             background: var(--btn-hover-bg);
             transform: translateY(-2px);
             border-color: var(--primary);
             color: var(--primary);
         }
-
-        .page-container + div {
+        .page-container+div {
             margin-top: -10px;
             text-align: center;
             padding-bottom: 8px;
         }
-
         footer {
             text-align: center;
             padding: 12px 12px 20px;
@@ -741,12 +699,10 @@
             border-top: 1px solid var(--border);
             margin-top: 8px;
         }
-
         footer a {
             text-decoration: none;
             color: inherit;
         }
-
         .copy-toast {
             position: fixed;
             background: var(--toast-bg);
@@ -763,25 +719,190 @@
             transition: opacity 0.2s ease, transform 0.2s ease;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
         }
-
         .copy-toast.show {
             opacity: 1;
             transform: translateY(0);
         }
-
+        .summary-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(14px) saturate(1.2);
+            -webkit-backdrop-filter: blur(14px) saturate(1.2);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .summary-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .summary-panel {
+            background: rgba(var(--surface-rgb), 0.86);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border-radius: 20px;
+            max-width: 560px;
+            width: 100%;
+            max-height: calc(100vh - 48px);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+            transform: scale(0.9) translateY(14px);
+            opacity: 0;
+            transition: transform 0.38s var(--spring-easing), opacity 0.26s ease;
+            overflow: hidden;
+        }
+        .summary-overlay.show .summary-panel {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-light);
+            flex-shrink: 0;
+            background: transparent;
+        }
+        .summary-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .summary-close {
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            color: var(--text3);
+            padding: 0 8px;
+            transition: transform 0.1s ease, color 0.2s;
+        }
+        .summary-close:active {
+            transform: scale(0.9);
+        }
+        .summary-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px 16px;
+            -webkit-overflow-scrolling: touch;
+            background: transparent;
+        }
+        .summary-body .group {
+            margin-bottom: 16px;
+        }
+        .summary-body .group-title {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .summary-body .group-title .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .summary-body .group-divider {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 8px 0 0 0;
+        }
+        .summary-body .item {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            padding: 2px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .summary-body .item .item-icon {
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .summary-body .item .item-name {
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .summary-body .item .item-value {
+            color: var(--text2);
+            word-break: break-all;
+        }
+        .summary-footer {
+            padding: 12px 24px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+            background: transparent;
+        }
+        .summary-footer button {
+            padding: 8px 24px;
+            border-radius: var(--btn-radius);
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            cursor: pointer;
+            transition: transform 0.12s var(--spring-easing), background 0.2s, box-shadow 0.2s, border-color 0.2s;
+            transform: translateZ(0);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .summary-footer button:hover {
+            background: var(--btn-hover-bg);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .summary-footer button:active {
+            transform: scale(0.96);
+            transition: transform 0.08s ease-out;
+        }
+        .summary-footer button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         @media (max-width: 640px) {
             .cards-grid,
             .auth-grid {
                 grid-template-columns: 1fr;
             }
-
             .navbar {
                 padding: 6px 24px 6px 0;
             }
-
             .nav-tab {
-                padding: 6px 12px;
-                font-size: 0.7rem;
+                padding: 6px 9px;
+                font-size: 0.68rem;
+                gap: 4px;
+            }
+            .summary-overlay {
+                padding: 14px;
+            }
+            .summary-panel {
+                max-width: 100%;
+                max-height: calc(100vh - 28px);
+                border-radius: 16px;
+            }
+            .summary-body {
+                padding: 12px 16px;
+            }
+            .summary-header h2 {
+                font-size: 1rem;
             }
         }
     </style>
@@ -791,7 +912,7 @@
         <h1><img src="https://ldy2330785100.github.io/Lidawn-Permission/avatar.jpg" alt="logo" style="width:28px; height:28px; border-radius:6px; vertical-align: middle; margin-right:4px;"> 亦冬权限站</h1>
         <p class="subtitle">一个测试可以获取到用户的权限的网站</p>
         <div class="disclaimer">
-            ⚠️ 所有检测均在本机浏览器完成，除公网IP查询需调用公开API外，不会将任何数据发送到外部服务器。权限信息仅供参考，不担负法律责任。不建议在本站内<strong>截图</strong>或公开访问，以免泄露隐私。
+            ⚠️ 所有检测均在本机浏览器完成，除公网IP与归属地查询需调用公开API外，不会将任何数据发送到外部服务器。权限信息仅供参考，不担负法律责任。不建议在本站内<strong>截图</strong>或公开访问，以免泄露隐私。
         </div>
     </header>
 
@@ -809,6 +930,7 @@
     <div class="page-wrapper critical-bg" id="pageWrapper">
         <div class="page-container" id="pageContainer"></div>
         <div>
+            <button class="repo-link-btn" id="summaryBtn" style="margin-right:8px;"><i class="fa-solid fa-file-lines"></i> 总结权限结果</button>
             <a href="https://github.com/ldy2330785100/Lidawn-Permission" class="repo-link-btn" target="_blank"><i class="fa-solid fa-code-fork"></i> 访问源仓库</a>
         </div>
         <footer>
@@ -824,9 +946,23 @@
         </div>
     </div>
 
+    <div class="summary-overlay" id="summaryOverlay">
+        <div class="summary-panel" id="summaryPanel">
+            <div class="summary-header">
+                <h2><i class="fa-solid fa-file-lines"></i> 权限结果总结</h2>
+                <span class="summary-close" id="summaryClose">&times;</span>
+            </div>
+            <div class="summary-body" id="summaryBody"></div>
+            <div class="summary-footer">
+                <button id="copySummaryBtn"><i class="fa-regular fa-copy"></i> 复制结果</button>
+                <button id="saveScreenshotBtn"><i class="fa-regular fa-image"></i> 保存为长截图</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
-            const pages = ['critical','high','medium','low','minimal'];
+            const pages = ['critical', 'high', 'medium', 'low', 'minimal'];
             let currentPage = 'critical';
             const pageContainer = document.getElementById('pageContainer');
             const navTabs = document.getElementById('navTabs');
@@ -895,7 +1031,7 @@
             function startMicVisualizer(stream) {
                 stopMicVisualizer();
                 micStream = stream;
-                micAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                micAudioContext = new(window.AudioContext || window.webkitAudioContext)();
                 micAnalyser = micAudioContext.createAnalyser();
                 micAnalyser.fftSize = 256;
                 const source = micAudioContext.createMediaStreamSource(stream);
@@ -1010,7 +1146,9 @@
             };
 
             function mapTimeZone(tz) { return timezoneMap[tz] || tz; }
+
             function mapNetworkType(type) { return networkTypeMap[type] || type; }
+
             function mapLanguage(lang) { return languageMap[lang] || lang; }
 
             const explanations = {
@@ -1101,114 +1239,114 @@
 
             const cardData = {
                 critical: [
-                    {l:'公网IP', id:'ip', icon:'fa-solid fa-globe'},
-                    {l:'运营商', id:'isp', icon:'fa-solid fa-building'},
-                    {l:'IP属地', id:'location', icon:'fa-solid fa-map-marker-alt'},
-                    {l:'WebGL渲染器', id:'webgl', icon:'fa-solid fa-cube'},
-                    {l:'Canvas指纹', id:'canvas', icon:'fa-solid fa-fingerprint'},
-                    {l:'音频指纹', id:'audio', icon:'fa-solid fa-wave-square'},
-                    {l:'电池状态', id:'battery', icon:'fa-solid fa-battery-full'},
-                    {l:'CPU核心', id:'cores', icon:'fa-solid fa-microchip'},
-                    {l:'GPU信息', id:'gpu', icon:'fa-solid fa-tv'},
-                    {l:'已安装字体', id:'fonts', icon:'fa-solid fa-font'},
-                    {l:'插件列表', id:'plugins', icon:'fa-solid fa-puzzle-piece'},
-                    {l:'综合指纹', id:'fingerprint', icon:'fa-solid fa-id-card'}
+                    { l: '公网IP', id: 'ip', icon: 'fa-solid fa-globe' },
+                    { l: '运营商', id: 'isp', icon: 'fa-solid fa-building' },
+                    { l: 'IP属地', id: 'location', icon: 'fa-solid fa-map-marker-alt' },
+                    { l: 'WebGL渲染器', id: 'webgl', icon: 'fa-solid fa-cube' },
+                    { l: 'Canvas指纹', id: 'canvas', icon: 'fa-solid fa-fingerprint' },
+                    { l: '音频指纹', id: 'audio', icon: 'fa-solid fa-wave-square' },
+                    { l: '电池状态', id: 'battery', icon: 'fa-solid fa-battery-full' },
+                    { l: 'CPU核心', id: 'cores', icon: 'fa-solid fa-microchip' },
+                    { l: 'GPU信息', id: 'gpu', icon: 'fa-solid fa-tv' },
+                    { l: '已安装字体', id: 'fonts', icon: 'fa-solid fa-font' },
+                    { l: '插件列表', id: 'plugins', icon: 'fa-solid fa-puzzle-piece' },
+                    { l: '综合指纹', id: 'fingerprint', icon: 'fa-solid fa-id-card' }
                 ],
                 high: [
-                    {l:'Cookie', id:'cookie', icon:'fa-solid fa-cookie-bite'},
-                    {l:'LocalStorage', id:'ls', icon:'fa-solid fa-database'},
-                    {l:'SessionStorage', id:'ss', icon:'fa-solid fa-box'},
-                    {l:'IndexedDB', id:'idb', icon:'fa-solid fa-server'},
-                    {l:'Referrer', id:'ref', icon:'fa-solid fa-link'},
-                    {l:'历史长度', id:'hist', icon:'fa-solid fa-history'},
-                    {l:'页面可见', id:'vis', icon:'fa-solid fa-eye'},
-                    {l:'闲置时长', id:'idle', icon:'fa-solid fa-hourglass-end'}
+                    { l: 'Cookie', id: 'cookie', icon: 'fa-solid fa-cookie-bite' },
+                    { l: 'LocalStorage', id: 'ls', icon: 'fa-solid fa-database' },
+                    { l: 'SessionStorage', id: 'ss', icon: 'fa-solid fa-box' },
+                    { l: 'IndexedDB', id: 'idb', icon: 'fa-solid fa-server' },
+                    { l: 'Referrer', id: 'ref', icon: 'fa-solid fa-link' },
+                    { l: '历史长度', id: 'hist', icon: 'fa-solid fa-history' },
+                    { l: '页面可见', id: 'vis', icon: 'fa-solid fa-eye' },
+                    { l: '闲置时长', id: 'idle', icon: 'fa-solid fa-hourglass-end' }
                 ],
                 medium: [
-                    {l:'精确时间', id:'time', icon:'fa-solid fa-clock'},
-                    {l:'CPU核心', id:'cpu', icon:'fa-solid fa-microchip'},
-                    {l:'设备内存', id:'mem', icon:'fa-solid fa-memory'},
-                    {l:'RTT延迟', id:'rtt', icon:'fa-solid fa-stopwatch'},
-                    {l:'下行带宽', id:'downlink', icon:'fa-solid fa-download'},
-                    {l:'连接类型', id:'ect', icon:'fa-solid fa-network-wired'},
-                    {l:'DNS耗时', id:'dns', icon:'fa-solid fa-search'},
-                    {l:'TCP耗时', id:'tcp', icon:'fa-solid fa-plug'},
-                    {l:'TLS耗时', id:'tls', icon:'fa-solid fa-lock'},
-                    {l:'导航耗时', id:'nav', icon:'fa-solid fa-route'},
-                    {l:'资源性能', id:'res', icon:'fa-solid fa-chart-bar'}
+                    { l: '精确时间', id: 'time', icon: 'fa-solid fa-clock' },
+                    { l: 'CPU核心', id: 'cpu', icon: 'fa-solid fa-microchip' },
+                    { l: '设备内存', id: 'mem', icon: 'fa-solid fa-memory' },
+                    { l: 'RTT延迟', id: 'rtt', icon: 'fa-solid fa-stopwatch' },
+                    { l: '下行带宽', id: 'downlink', icon: 'fa-solid fa-download' },
+                    { l: '连接类型', id: 'ect', icon: 'fa-solid fa-network-wired' },
+                    { l: 'DNS耗时', id: 'dns', icon: 'fa-solid fa-search' },
+                    { l: 'TCP耗时', id: 'tcp', icon: 'fa-solid fa-plug' },
+                    { l: 'TLS耗时', id: 'tls', icon: 'fa-solid fa-lock' },
+                    { l: '导航耗时', id: 'nav', icon: 'fa-solid fa-route' },
+                    { l: '资源性能', id: 'res', icon: 'fa-solid fa-chart-bar' }
                 ],
                 low: [
-                    {l:'网络类型', id:'nettype', icon:'fa-solid fa-wifi'},
-                    {l:'省流量', id:'savedata', icon:'fa-solid fa-tachometer-alt'},
-                    {l:'下行预估', id:'dlbw', icon:'fa-solid fa-arrow-down'},
-                    {l:'上行测速', id:'upspeed', icon:'fa-solid fa-arrow-up'},
-                    {l:'完整UA', id:'ua', icon:'fa-solid fa-info-circle'},
-                    {l:'平台', id:'plat', icon:'fa-solid fa-desktop'},
-                    {l:'浏览器版本', id:'bver', icon:'fa-brands fa-chrome'},
-                    {l:'语言', id:'lang', icon:'fa-solid fa-language'}
+                    { l: '网络类型', id: 'nettype', icon: 'fa-solid fa-wifi' },
+                    { l: '省流量', id: 'savedata', icon: 'fa-solid fa-tachometer-alt' },
+                    { l: '下行预估', id: 'dlbw', icon: 'fa-solid fa-arrow-down' },
+                    { l: '上行测速', id: 'upspeed', icon: 'fa-solid fa-arrow-up' },
+                    { l: '完整UA', id: 'ua', icon: 'fa-solid fa-info-circle' },
+                    { l: '平台', id: 'plat', icon: 'fa-solid fa-desktop' },
+                    { l: '浏览器版本', id: 'bver', icon: 'fa-brands fa-chrome' },
+                    { l: '语言', id: 'lang', icon: 'fa-solid fa-language' }
                 ],
                 minimal: [
-                    {l:'分辨率', id:'scr', icon:'fa-solid fa-expand'},
-                    {l:'像素比', id:'dpr', icon:'fa-solid fa-eye-dropper'},
-                    {l:'屏幕方向', id:'orient', icon:'fa-solid fa-mobile-alt'},
-                    {l:'时区', id:'tz', icon:'fa-solid fa-globe-americas'},
-                    {l:'地区码', id:'locale', icon:'fa-solid fa-flag'},
-                    {l:'系统语言', id:'syslang', icon:'fa-solid fa-globe'},
-                    {l:'渲染引擎', id:'engine', icon:'fa-solid fa-cogs'},
-                    {l:'API支持', id:'apis', icon:'fa-solid fa-code'},
-                    {l:'DOM加载', id:'domload', icon:'fa-solid fa-spinner'},
-                    {l:'传输大小', id:'trans', icon:'fa-solid fa-weight-hanging'},
-                    {l:'缓存状态', id:'cache', icon:'fa-solid fa-archive'},
-                    {l:'MIME类型', id:'mime', icon:'fa-solid fa-file-alt'},
-                    {l:'默认字号', id:'fontsize', icon:'fa-solid fa-text-height'},
-                    {l:'色彩深度', id:'colordepth', icon:'fa-solid fa-palette'}
+                    { l: '分辨率', id: 'scr', icon: 'fa-solid fa-expand' },
+                    { l: '像素比', id: 'dpr', icon: 'fa-solid fa-eye-dropper' },
+                    { l: '屏幕方向', id: 'orient', icon: 'fa-solid fa-mobile-alt' },
+                    { l: '时区', id: 'tz', icon: 'fa-solid fa-globe-americas' },
+                    { l: '地区码', id: 'locale', icon: 'fa-solid fa-flag' },
+                    { l: '系统语言', id: 'syslang', icon: 'fa-solid fa-globe' },
+                    { l: '渲染引擎', id: 'engine', icon: 'fa-solid fa-cogs' },
+                    { l: 'API支持', id: 'apis', icon: 'fa-solid fa-code' },
+                    { l: 'DOM加载', id: 'domload', icon: 'fa-solid fa-spinner' },
+                    { l: '传输大小', id: 'trans', icon: 'fa-solid fa-weight-hanging' },
+                    { l: '缓存状态', id: 'cache', icon: 'fa-solid fa-archive' },
+                    { l: 'MIME类型', id: 'mime', icon: 'fa-solid fa-file-alt' },
+                    { l: '默认字号', id: 'fontsize', icon: 'fa-solid fa-text-height' },
+                    { l: '色彩深度', id: 'colordepth', icon: 'fa-solid fa-palette' }
                 ]
             };
 
             const permList = {
                 critical: [],
                 high: [
-                    {k:'geolocation', n:'定位', icon:'fa-solid fa-map-pin'},
-                    {k:'clipboard-read', n:'读取剪贴板', icon:'fa-solid fa-clipboard'},
-                    {k:'clipboard-write', n:'写入剪贴板', icon:'fa-solid fa-clipboard-check'},
-                    {k:'notifications', n:'通知推送', icon:'fa-solid fa-bell'}
+                    { k: 'geolocation', n: '定位', icon: 'fa-solid fa-map-pin' },
+                    { k: 'clipboard-read', n: '读取剪贴板', icon: 'fa-solid fa-clipboard' },
+                    { k: 'clipboard-write', n: '写入剪贴板', icon: 'fa-solid fa-clipboard-check' },
+                    { k: 'notifications', n: '通知推送', icon: 'fa-solid fa-bell' }
                 ],
                 medium: [
-                    {k:'camera', n:'摄像头', icon:'fa-solid fa-video'},
-                    {k:'microphone', n:'麦克风', icon:'fa-solid fa-microphone'},
-                    {k:'display-capture', n:'屏幕录制/共享', icon:'fa-solid fa-desktop'},
-                    {k:'bluetooth', n:'蓝牙', icon:'fa-brands fa-bluetooth'},
-                    {k:'usb', n:'USB', icon:'fa-brands fa-usb'},
-                    {k:'midi', n:'MIDI', icon:'fa-solid fa-music'},
-                    {k:'idle-detection', n:'空闲检测', icon:'fa-solid fa-user-clock'},
-                    {k:'wake-lock', n:'唤醒锁', icon:'fa-solid fa-lock-open'}
+                    { k: 'camera', n: '摄像头', icon: 'fa-solid fa-video' },
+                    { k: 'microphone', n: '麦克风', icon: 'fa-solid fa-microphone' },
+                    { k: 'display-capture', n: '屏幕录制/共享', icon: 'fa-solid fa-desktop' },
+                    { k: 'bluetooth', n: '蓝牙', icon: 'fa-brands fa-bluetooth' },
+                    { k: 'usb', n: 'USB', icon: 'fa-brands fa-usb' },
+                    { k: 'midi', n: 'MIDI', icon: 'fa-solid fa-music' },
+                    { k: 'idle-detection', n: '空闲检测', icon: 'fa-solid fa-user-clock' },
+                    { k: 'wake-lock', n: '唤醒锁', icon: 'fa-solid fa-lock-open' }
                 ],
                 low: [
-                    {k:'serial', n:'串口', icon:'fa-solid fa-terminal'},
-                    {k:'hid', n:'外设键鼠/手柄', icon:'fa-solid fa-gamepad'},
-                    {k:'file-handles', n:'本地文件', icon:'fa-solid fa-folder-open'},
-                    {k:'persistent-storage', n:'永久存储', icon:'fa-solid fa-save'},
-                    {k:'background-sync', n:'后台同步', icon:'fa-solid fa-sync'},
-                    {k:'storage-access', n:'存储访问', icon:'fa-solid fa-database'},
-                    {k:'local-fonts', n:'本地字体', icon:'fa-solid fa-font'},
-                    {k:'web-share', n:'网页分享', icon:'fa-solid fa-share-alt'},
-                    {k:'ambient-light', n:'环境光', icon:'fa-solid fa-sun'}
+                    { k: 'serial', n: '串口', icon: 'fa-solid fa-terminal' },
+                    { k: 'hid', n: '外设键鼠/手柄', icon: 'fa-solid fa-gamepad' },
+                    { k: 'file-handles', n: '本地文件', icon: 'fa-solid fa-folder-open' },
+                    { k: 'persistent-storage', n: '永久存储', icon: 'fa-solid fa-save' },
+                    { k: 'background-sync', n: '后台同步', icon: 'fa-solid fa-sync' },
+                    { k: 'storage-access', n: '存储访问', icon: 'fa-solid fa-database' },
+                    { k: 'local-fonts', n: '本地字体', icon: 'fa-solid fa-font' },
+                    { k: 'web-share', n: '网页分享', icon: 'fa-solid fa-share-alt' },
+                    { k: 'ambient-light', n: '环境光', icon: 'fa-solid fa-sun' }
                 ],
                 minimal: [
-                    {k:'network-info', n:'网络详情', icon:'fa-solid fa-signal'},
-                    {k:'motion-sensors', n:'运动传感器', icon:'fa-solid fa-running'},
-                    {k:'vibration', n:'设备震动', icon:'fa-solid fa-mobile'},
-                    {k:'window-management', n:'多屏幕管理', icon:'fa-solid fa-window-restore'},
-                    {k:'screen-orientation', n:'屏幕方向锁', icon:'fa-solid fa-mobile-alt'},
-                    {k:'xr', n:'VR/AR', icon:'fa-solid fa-vr-cardboard'},
-                    {k:'pointer-lock', n:'指针锁定', icon:'fa-solid fa-mouse-pointer'},
-                    {k:'enumerate-devices', n:'设备枚举', icon:'fa-solid fa-list-ul'}
+                    { k: 'network-info', n: '网络详情', icon: 'fa-solid fa-signal' },
+                    { k: 'motion-sensors', n: '运动传感器', icon: 'fa-solid fa-running' },
+                    { k: 'vibration', n: '设备震动', icon: 'fa-solid fa-mobile' },
+                    { k: 'window-management', n: '多屏幕管理', icon: 'fa-solid fa-window-restore' },
+                    { k: 'screen-orientation', n: '屏幕方向锁', icon: 'fa-solid fa-mobile-alt' },
+                    { k: 'xr', n: 'VR/AR', icon: 'fa-solid fa-vr-cardboard' },
+                    { k: 'pointer-lock', n: '指针锁定', icon: 'fa-solid fa-mouse-pointer' },
+                    { k: 'enumerate-devices', n: '设备枚举', icon: 'fa-solid fa-list-ul' }
                 ]
             };
 
             function buildAllPages() {
                 pageContainer.innerHTML = pages.map(p => `
-                    <div class="page ${p==='critical'?'active':''}" id="page-${p}">
+                    <div class="page ${p === 'critical' ? 'active' : ''}" id="page-${p}">
                         <div class="refresh-btn-container">
                             <button class="refresh-btn" onclick="location.reload()"><i class="fa-solid fa-rotate-right"></i> 刷新权限状态</button>
                         </div>
@@ -1228,7 +1366,8 @@
                     if (pid === 'high') {
                         const track = document.createElement('div');
                         track.className = 'info-card track-card';
-                        track.innerHTML = '<div class="card-label" data-explain="track"><i class="fa-solid fa-mouse-pointer"></i> 实时行为追踪</div><div class="card-value" id="track-panel" style="max-height:140px;flex-direction:column;align-items:flex-start; white-space:pre-wrap; overflow-y:auto;"><div class="expressive-loader"><span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span></div></div>';
+                        track.innerHTML =
+                            '<div class="card-label" data-explain="track"><i class="fa-solid fa-mouse-pointer"></i> 实时行为追踪</div><div class="card-value" id="track-panel" style="max-height:140px;flex-direction:column;align-items:flex-start; white-space:pre-wrap; overflow-y:auto;"><div class="expressive-loader"><span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span></div></div>';
                         grid.appendChild(track);
                     }
                 }
@@ -1237,7 +1376,8 @@
                     const sec = document.getElementById(`perm-${pid}`);
                     if (!sec) continue;
                     if (perms.length === 0) { sec.innerHTML = ''; continue; }
-                    sec.innerHTML = `<div class="permission-section-header"><i class="fa-solid fa-key"></i> 手动授权权限</div>
+                    sec.innerHTML =
+                    `<div class="permission-section-header"><i class="fa-solid fa-key"></i> 手动授权权限</div>
                         <div class="auth-grid" id="auth-grid-${pid}"></div>`;
                     const authGrid = document.getElementById(`auth-grid-${pid}`);
                     perms.forEach(p => {
@@ -1246,7 +1386,7 @@
                         card.innerHTML = `
                             <div class="auth-info">
                                 <span class="auth-name" data-explain="${p.k}"><i class="${p.icon}"></i> ${p.n}</span>
-                                <div class="auth-status" id="status-${p.k}">暂未申请</div>
+                                <div class="auth-status" id="status-${p.k}">⏳ 暂未申请</div>
                             </div>
                             <button class="auth-btn" id="btn-${p.k}" data-key="${p.k}">点击授权</button>
                         `;
@@ -1261,7 +1401,7 @@
                     });
                 });
 
-                document.querySelectorAll('.auth-btn').forEach(btn => btn.addEventListener('click', function(){
+                document.querySelectorAll('.auth-btn').forEach(btn => btn.addEventListener('click', function() {
                     requestPermission(this.dataset.key);
                 }));
 
@@ -1276,7 +1416,8 @@
                     el.addEventListener('click', async function(e) {
                         if (e.target.closest('button, a, .auth-btn, .card-label, .expressive-loader, i')) return;
                         const textToCopy = (this.innerText || '').trim();
-                        if (!textToCopy || textToCopy.includes('加载中') || textToCopy.includes('loader') || textToCopy.includes('⏳')) return;
+                        if (!textToCopy || textToCopy.includes('加载中') || textToCopy.includes('loader') || textToCopy
+                            .includes('⏳')) return;
                         try {
                             await navigator.clipboard.writeText(textToCopy);
                             showCopyToast(this, e);
@@ -1287,7 +1428,8 @@
                             textarea.style.opacity = '0';
                             document.body.appendChild(textarea);
                             textarea.select();
-                            try { document.execCommand('copy'); showCopyToast(this, e); } catch (e2) {}
+                            try { document.execCommand('copy');
+                                showCopyToast(this, e); } catch (e2) {}
                             document.body.removeChild(textarea);
                         }
                     });
@@ -1363,7 +1505,7 @@
             }
 
             modalCloseX.addEventListener('click', hideModal);
-            modalOverlay.addEventListener('click', e => { if(e.target === modalOverlay) hideModal(); });
+            modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) hideModal(); });
 
             function switchPage(pid) {
                 if (currentPage === pid) return;
@@ -1391,6 +1533,49 @@
                 if (tab) switchPage(tab.dataset.page);
             });
 
+            let swipeStartX = 0,
+                swipeStartY = 0,
+                swipeStartAt = 0,
+                swipeTracking = false;
+            const SWIPE_MIN_DISTANCE = 60,
+                SWIPE_MAX_DURATION = 700;
+
+            pageWrapper.addEventListener('touchstart', e => {
+                if (e.touches.length !== 1) {
+                    swipeTracking = false;
+                    return;
+                }
+                swipeTracking = true;
+                swipeStartX = e.touches[0].clientX;
+                swipeStartY = e.touches[0].clientY;
+                swipeStartAt = Date.now();
+            }, { passive: true });
+
+            pageWrapper.addEventListener('touchend', e => {
+                if (!swipeTracking || e.changedTouches.length !== 1) return;
+                swipeTracking = false;
+
+                if (document.body.classList.contains('modal-open')) return;
+                const summaryOverlay = document.getElementById('summaryOverlay');
+                if (summaryOverlay && summaryOverlay.classList.contains('show')) return;
+                const modalOverlay = document.getElementById('modalOverlay');
+                if (modalOverlay && modalOverlay.classList.contains('show')) return;
+
+                const dx = e.changedTouches[0].clientX - swipeStartX;
+                const dy = e.changedTouches[0].clientY - swipeStartY;
+
+                if (Date.now() - swipeStartAt > SWIPE_MAX_DURATION) return;
+                if (Math.abs(dx) < SWIPE_MIN_DISTANCE) return;
+                if (Math.abs(dx) < Math.abs(dy) * 1.6) return;
+
+                const index = pages.indexOf(currentPage);
+                if (dx < 0 && index < pages.length - 1) {
+                    switchPage(pages[index + 1]);
+                } else if (dx > 0 && index > 0) {
+                    switchPage(pages[index - 1]);
+                }
+            }, { passive: true });
+
             function updateScrollHint() {
                 if (!navbar || !scrollHint) return;
                 if (navbar.scrollLeft <= 1) {
@@ -1399,27 +1584,27 @@
                     scrollHint.classList.add('hidden-hint');
                 }
             }
-            navbar.addEventListener('scroll', updateScrollHint, {passive: true});
+            navbar.addEventListener('scroll', updateScrollHint, { passive: true });
             window.addEventListener('resize', updateScrollHint);
             setTimeout(updateScrollHint, 100);
 
             function formatDateTime(date) {
                 const y = date.getFullYear();
-                const m = (date.getMonth()+1).toString().padStart(2,'0');
-                const d = date.getDate().toString().padStart(2,'0');
-                const h = date.getHours().toString().padStart(2,'0');
-                const min = date.getMinutes().toString().padStart(2,'0');
-                const s = date.getSeconds().toString().padStart(2,'0');
+                const m = (date.getMonth() + 1).toString().padStart(2, '0');
+                const d = date.getDate().toString().padStart(2, '0');
+                const h = date.getHours().toString().padStart(2, '0');
+                const min = date.getMinutes().toString().padStart(2, '0');
+                const s = date.getSeconds().toString().padStart(2, '0');
                 return `${y}/${m}/${d} ${h}:${min}:${s}`;
             }
 
             function setVal(id, text) {
-                const el = document.getElementById('v-'+id);
+                const el = document.getElementById('v-' + id);
                 if (el) el.innerHTML = text;
             }
 
             function setValError(id, msg) {
-                const el = document.getElementById('v-'+id);
+                const el = document.getElementById('v-' + id);
                 if (el) el.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:#e53e3e;"></i> ' + msg;
             }
 
@@ -1432,11 +1617,11 @@
             }
 
             async function requestPermission(key) {
-                const statusEl = document.getElementById('status-'+key);
-                const btn = document.getElementById('btn-'+key);
+                const statusEl = document.getElementById('status-' + key);
+                const btn = document.getElementById('btn-' + key);
                 if (!btn || btn.disabled) return;
                 btn.disabled = true;
-                btn.classList.remove('granted','denied','hidden');
+                btn.classList.remove('granted', 'denied', 'hidden');
                 btn.textContent = '点击授权';
                 if (statusEl) {
                     statusEl.innerHTML = '<span class="expressive-loader" style="gap:4px;"><span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span></span>';
@@ -1450,23 +1635,24 @@
                         'geolocation': () => new Promise((resolve, reject) => {
                             navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
                         }),
-                        'camera': () => navigator.mediaDevices.getUserMedia({video:true}),
+                        'camera': () => navigator.mediaDevices.getUserMedia({ video: true }),
                         'microphone': async () => {
-                            const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+                            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                             startMicVisualizer(stream);
                         },
                         'notifications': () => Notification.requestPermission(),
                         'clipboard-read': () => navigator.clipboard.readText(),
                         'clipboard-write': () => navigator.clipboard.writeText('test'),
-                        'display-capture': () => navigator.mediaDevices.getDisplayMedia({video:true}),
-                        'bluetooth': () => navigator.bluetooth.requestDevice({acceptAllDevices:true}),
-                        'usb': () => navigator.usb.requestDevice({filters:[]}),
+                        'display-capture': () => navigator.mediaDevices.getDisplayMedia({ video: true }),
+                        'bluetooth': () => navigator.bluetooth.requestDevice({ acceptAllDevices: true }),
+                        'usb': () => navigator.usb.requestDevice({ filters: [] }),
                         'serial': () => navigator.serial.requestPort(),
-                        'hid': () => navigator.hid.requestDevice({filters:[]}),
+                        'hid': () => navigator.hid.requestDevice({ filters: [] }),
                         'file-handles': () => window.showOpenFilePicker(),
                         'persistent-storage': () => navigator.storage.persist(),
-                        'background-sync': async () => { if(!('serviceWorker' in navigator)) throw new Error('unsupported'); },
-                        'network-info': async () => { if(!navigator.connection) throw new Error('unsupported'); },
+                        'background-sync': async () => { if (!('serviceWorker' in navigator)) throw new Error(
+                                'unsupported'); },
+                        'network-info': async () => { if (!navigator.connection) throw new Error('unsupported'); },
                         'motion': async () => {
                             if (typeof DeviceMotionEvent === 'undefined') throw new Error('unsupported');
                             if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -1474,7 +1660,8 @@
                                 if (r !== 'granted') throw new Error('denied');
                             }
                         },
-                        'vibration': async () => { if(!navigator.vibrate) throw new Error('unsupported'); navigator.vibrate(200); },
+                        'vibration': async () => { if (!navigator.vibrate) throw new Error('unsupported');
+                            navigator.vibrate(200); },
                         'window-management': async () => {
                             if (!('getScreenDetails' in window)) throw new Error('unsupported');
                             await window.getScreenDetails();
@@ -1502,7 +1689,7 @@
                         },
                         'web-share': async () => {
                             if (!navigator.share) throw new Error('unsupported');
-                            await navigator.share({title:'亦冬权限站-亦冬链迹', text:'测试分享', url:window.location.href});
+                            await navigator.share({ title: '亦冬权限站-亦冬链迹', text: '测试分享', url: window.location.href });
                         },
                         'ambient-light': async () => {
                             if (!('AmbientLightSensor' in window)) throw new Error('unsupported');
@@ -1523,7 +1710,8 @@
                             body.requestPointerLock();
                         },
                         'enumerate-devices': async () => {
-                            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) throw new Error('unsupported');
+                            if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) throw new Error(
+                                'unsupported');
                             await navigator.mediaDevices.enumerateDevices();
                         }
                     };
@@ -1531,22 +1719,22 @@
                     if (!operation) throw new Error('unknown');
                     await withTimeout(operation(), 5000);
                     if (key === 'microphone') {
-                        statusEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#38a169;"></i> 授权成功 (可视化已开启)';
+                        statusEl.innerHTML = '✅ 授权成功 (可视化已开启)';
                     } else {
-                        statusEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#38a169;"></i> 授权成功';
+                        statusEl.innerHTML = '✅ 授权成功';
                     }
-                    btn.classList.add('granted','hidden');
+                    btn.classList.add('granted', 'hidden');
                 } catch (e) {
                     if (key === 'microphone') {
                         stopMicVisualizer();
                         const parent = statusEl.parentNode;
                         const placeholder = createPlaceholder(parent);
                     }
-                    let msg = '授权失败';
-                    if (e.message === 'timeout') msg = '申请超时';
-                    else if (e.message === 'unsupported') msg = '权限不支持';
-                    else if (e.message === 'denied' || e.name === 'NotAllowedError') msg = '授权失败';
-                    statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:#e53e3e;"></i> ' + msg;
+                    let msg = '❌ 授权失败';
+                    if (e.message === 'timeout') msg = '⏳ 申请超时';
+                    else if (e.message === 'unsupported') msg = '⚠️ 权限不支持';
+                    else if (e.message === 'denied' || e.name === 'NotAllowedError') msg = '❌ 授权失败';
+                    statusEl.innerHTML = msg;
                     btn.classList.add('denied');
                 } finally {
                     btn.disabled = false;
@@ -1555,24 +1743,71 @@
 
             function simpleHash(str) {
                 let hash = 0;
-                for (let i=0; i<str.length; i++) hash = ((hash<<5)-hash)+str.charCodeAt(i)|0;
-                return (hash>>>0).toString(16).padStart(8,'0');
+                for (let i = 0; i < str.length; i++) hash = ((hash << 5) - hash) + str.charCodeAt(i) | 0;
+                return (hash >>> 0).toString(16).padStart(8, '0');
+            }
+
+            async function fetchIpSources() {
+                const sources = [{
+                        url: 'https://ipwho.is/',
+                        pick: d => (d && d.success !== false && d.ip) ? {
+                            ip: d.ip,
+                            isp: (d.connection && (d.connection.isp || d.connection.org)) || '',
+                            city: d.city || ''
+                        } : null
+                    },
+                    {
+                        url: 'https://ipinfo.io/json',
+                        pick: d => (d && d.ip) ? {
+                            ip: d.ip,
+                            isp: d.org || '',
+                            city: d.city || ''
+                        } : null
+                    },
+                    {
+                        url: 'https://api64.ipify.org?format=json',
+                        pick: d => (d && d.ip) ? { ip: d.ip, isp: '', city: '' } : null
+                    }
+                ];
+                for (const source of sources) {
+                    try {
+                        const res = await withTimeout(fetch(source.url), 5000);
+                        if (!res.ok) continue;
+                        const data = await res.json();
+                        const picked = source.pick(data);
+                        if (picked) return picked;
+                    } catch (e) {}
+                }
+                return null;
             }
 
             async function populateData() {
-                withTimeout(fetch('https://api.ipify.org?format=json'), 5000)
-                    .then(r => r.json()).then(d => setVal('ip', d.ip))
-                    .catch(e => setValError('ip', e.message==='timeout'?'申请超时':'获取失败'));
-
                 const ispMap = {
-                    'China Mobile': '中国移动',
+                    'China Unicom (Hong Kong)': '中国联通（香港）',
                     'China Unicom': '中国联通',
+                    'China Mobile': '中国移动',
                     'China Telecom': '中国电信',
+                    'China TieTong': '中国铁通',
+                    'China Education and Research Network': '中国教育和科研计算机网',
+                    'CERNET': '中国教育和科研计算机网',
+                    'Chunghwa Telecom': '中华电信',
+                    'Taiwan Mobile': '台湾大哥大',
+                    'FarEasTone': '远传电信',
+                    'Hong Kong Broadband': '香港宽频',
+                    'PCCW': '电讯盈科',
+                    'HKT': '香港电讯',
+                    'Aliyun': '阿里云',
                     'Alibaba': '阿里巴巴',
                     'Tencent': '腾讯',
+                    'Huawei': '华为',
+                    'Baidu': '百度',
+                    'ByteDance': '字节跳动',
                     'Amazon': '亚马逊',
                     'Google': '谷歌',
                     'Microsoft': '微软',
+                    'Cloudflare': 'Cloudflare',
+                    'DigitalOcean': 'DigitalOcean',
+                    'Akamai': 'Akamai',
                 };
 
                 const cityMap = {
@@ -1827,82 +2062,96 @@
                     'Tainan': '中国台湾台南',
                 };
 
-                withTimeout(fetch('https://ipapi.co/json/'), 5000)
-                    .then(r => r.json()).then(d => {
-                        let isp = d.org || d.asn || '获取失败';
+                fetchIpSources().then(ipInfo => {
+                    if (ipInfo) {
+                        setVal('ip', ipInfo.ip || '获取失败');
+
+                        let isp = ipInfo.isp || '';
                         for (const [en, zh] of Object.entries(ispMap)) {
                             if (isp.includes(en)) {
                                 isp = zh;
                                 break;
                             }
                         }
-                        if (isp === '获取失败') isp = '获取失败';
-                        setVal('isp', isp);
+                        setVal('isp', isp || '获取失败');
 
-                        let city = cityMap[d.city] || d.city || '';
-                        let location = city || '获取失败';
-                        setVal('location', location || '获取失败');
-                    }).catch(e => {
-                        const msg = e.message==='timeout'?'申请超时':'获取失败';
-                        setValError('isp', msg);
-                        setValError('location', msg);
-                    });
+                        const city = cityMap[ipInfo.city] || ipInfo.city || '';
+                        setVal('location', city || '获取失败');
+                    } else {
+                        setValError('ip', '获取失败');
+                        setValError('isp', '获取失败');
+                        setValError('location', '获取失败');
+                    }
+                });
 
                 try {
-                    const cv=document.createElement('canvas'); const gl=cv.getContext('webgl');
-                    if(gl){ const ext=gl.getExtension('WEBGL_debug_renderer_info'); setVal('webgl', ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):'受保护'); }
-                    else setVal('webgl','WebGL不可用');
-                } catch { setValError('webgl','获取失败'); }
+                    const cv = document.createElement('canvas');
+                    const gl = cv.getContext('webgl');
+                    if (gl) { const ext = gl.getExtension('WEBGL_debug_renderer_info');
+                        setVal('webgl', ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : '受保护'); } else setVal(
+                        'webgl', 'WebGL不可用');
+                } catch { setValError('webgl', '获取失败'); }
                 try {
-                    const c=document.createElement('canvas'); c.width=200;c.height=40;
-                    const ctx=c.getContext('2d'); ctx.fillText('FP'+Date.now(),6,24);
+                    const c = document.createElement('canvas');
+                    c.width = 200;
+                    c.height = 40;
+                    const ctx = c.getContext('2d');
+                    ctx.fillText('FP' + Date.now(), 6, 24);
                     setVal('canvas', simpleHash(c.toDataURL()));
-                } catch { setValError('canvas','获取失败'); }
+                } catch { setValError('canvas', '获取失败'); }
                 try {
-                    const actx=new (window.AudioContext||window.webkitAudioContext)();
-                    setVal('audio', simpleHash(actx.sampleRate+'|'+actx.destination.maxChannelCount));
+                    const actx = new(window.AudioContext || window.webkitAudioContext)();
+                    setVal('audio', simpleHash(actx.sampleRate + '|' + actx.destination.maxChannelCount));
                     actx.close();
-                } catch { setValError('audio','获取失败'); }
-                if(navigator.getBattery) {
+                } catch { setValError('audio', '获取失败'); }
+                if (navigator.getBattery) {
                     withTimeout(navigator.getBattery(), 5000)
-                        .then(b => setVal('battery', Math.round(b.level*100)+'% '+(b.charging?'充电中':'使用电池')))
-                        .catch(e => setValError('battery', e.message==='timeout'?'申请超时':'获取失败'));
-                } else setValError('battery','API不可用');
-                setVal('cores', navigator.hardwareConcurrency ? navigator.hardwareConcurrency+'核' : '获取失败');
+                        .then(b => setVal('battery', Math.round(b.level * 100) + '% ' + (b.charging ? '充电中' :
+                            '使用电池')))
+                        .catch(e => setValError('battery', e.message === 'timeout' ? '申请超时' : '获取失败'));
+                } else setValError('battery', 'API不可用');
+                setVal('cores', navigator.hardwareConcurrency ? navigator.hardwareConcurrency + '核' : '获取失败');
                 setVal('gpu', document.getElementById('v-webgl')?.textContent || '获取失败');
 
                 setTimeout(() => {
-                    const fonts=['Arial','微软雅黑','Consolas','Georgia','Impact','宋体','黑体','楷体','仿宋'];
-                    const base=document.createElement('span'); base.style.cssText='position:absolute;visibility:hidden;font-size:20px;font-family:monospace';
-                    base.textContent='测试'; document.body.appendChild(base); const bw=base.offsetWidth;
-                    const found=fonts.filter(f=>{ base.style.fontFamily=`"${f}",monospace`; return base.offsetWidth!==bw; });
+                    const fonts = ['Arial', '微软雅黑', 'Consolas', 'Georgia', 'Impact', '宋体', '黑体', '楷体', '仿宋'];
+                    const base = document.createElement('span');
+                    base.style.cssText = 'position:absolute;visibility:hidden;font-size:20px;font-family:monospace';
+                    base.textContent = '测试';
+                    document.body.appendChild(base);
+                    const bw = base.offsetWidth;
+                    const found = fonts.filter(f => { base.style.fontFamily = `"${f}",monospace`; return base
+                            .offsetWidth !== bw; });
                     document.body.removeChild(base);
                     setVal('fonts', found.length ? found.join(', ') : '未检测到额外字体');
                 }, 200);
 
                 try {
-                    const pl=navigator.plugins; if(pl&&pl.length) { const names=[]; for(let i=0;i<pl.length;i++) names.push(pl[i].name); setVal('plugins', names.join(', ')); }
-                    else setVal('plugins','无');
-                } catch { setValError('plugins','获取失败'); }
-                setVal('fingerprint', simpleHash(navigator.userAgent+'|'+screen.width+'x'+screen.height+'|'+navigator.language));
+                    const pl = navigator.plugins;
+                    if (pl && pl.length) { const names = []; for (let i = 0; i < pl.length; i++) names.push(pl[i]
+                        .name);
+                        setVal('plugins', names.join(', ')); } else setVal('plugins', '无');
+                } catch { setValError('plugins', '获取失败'); }
+                setVal('fingerprint', simpleHash(navigator.userAgent + '|' + screen.width + 'x' + screen.height + '|' +
+                    navigator.language));
                 if (document.cookie) {
-                  const cookies = document.cookie.split(';').map(c => c.trim().split('=')[0]);
-                  setVal('cookie', cookies.length + '个：' + cookies.join(', '));
+                    const cookies = document.cookie.split(';').map(c => c.trim().split('=')[0]);
+                    setVal('cookie', cookies.length + '个：' + cookies.join(', '));
                 } else {
-                  setVal('cookie', '无');
+                    setVal('cookie', '无');
                 }
                 try {
-                  const keys = [];
-                  for (let i = 0; i < localStorage.length; i++) {
-                    keys.push(localStorage.key(i));
-                  }
-                  const displayKeys = keys.slice(0, 6);
-                  let text = keys.length + '项';
-                  if (displayKeys.length > 0) {
-                    text += '：' + displayKeys.join(', ');
-                    if (keys.length > 6) text += '...';
-                  }
-                  setVal('ls', text);
+                    const keys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        keys.push(localStorage.key(i));
+                    }
+                    const displayKeys = keys.slice(0, 6);
+                    let text = keys.length + '项';
+                    if (displayKeys.length > 0) {
+                        text += '：' + displayKeys.join(', ');
+                        if (keys.length > 6) text += '...';
+                    }
+                    setVal('ls', text);
                 } catch { setValError('ls', '不可用'); }
                 try {
                     const keys = [];
@@ -1931,98 +2180,429 @@
                 } else {
                     setValError('idb', '不可用');
                 }
-                setVal('ref', document.referrer||'无'); setVal('hist', history.length+'条');
-                setVal('vis', document.visibilityState==='visible'?'可见':'隐藏');
-                document.addEventListener('visibilitychange', ()=>setVal('vis', document.visibilityState==='visible'?'可见':'隐藏'));
+                setVal('ref', document.referrer || '无');
+                setVal('hist', history.length + '条');
+                setVal('vis', document.visibilityState === 'visible' ? '可见' : '隐藏');
+                document.addEventListener('visibilitychange', () => setVal('vis', document.visibilityState === 'visible' ?
+                    '可见' : '隐藏'));
 
-                let lastAct=Date.now();
-                setInterval(()=>{ const sec=Math.floor((Date.now()-lastAct)/1000); setVal('idle', sec+'秒'+(sec>30?' (离开)':'')); }, 1000);
-                ['mousemove','keydown','scroll','click','touchstart'].forEach(e=>document.addEventListener(e, ()=>lastAct=Date.now(),{passive:true}));
-                const trackPanel=document.getElementById('track-panel');
-                if(trackPanel){
-                    let log=[],clickC=0,scrollC=0,start=Date.now();
+                let lastAct = Date.now();
+                setInterval(() => { const sec = Math.floor((Date.now() - lastAct) / 1000);
+                    setVal('idle', sec + '秒' + (sec > 30 ? ' (离开)' : '')); }, 1000);
+                ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(e => document.addEventListener(e, () =>
+                    lastAct = Date.now(), { passive: true }));
+                const trackPanel = document.getElementById('track-panel');
+                if (trackPanel) {
+                    let log = [],
+                        clickC = 0,
+                        scrollC = 0,
+                        start = Date.now();
                     let autoScroll = true;
                     trackPanel.addEventListener('scroll', () => {
-                        const isAtBottom = trackPanel.scrollTop + trackPanel.clientHeight >= trackPanel.scrollHeight - 5;
+                        const isAtBottom = trackPanel.scrollTop + trackPanel.clientHeight >= trackPanel
+                        .scrollHeight - 5;
                         autoScroll = isAtBottom;
                     });
 
-                    const add=(type,detail)=>{
-                        log.push(formatDateTime(new Date())+' '+type+': '+detail);
-                        if(log.length > 5) log.shift();
+                    const add = (type, detail) => {
+                        log.push(formatDateTime(new Date()) + ' ' + type + ': ' + detail);
+                        if (log.length > 5) log.shift();
                         trackPanel.innerHTML = '';
-                        for(let i=0; i<5; i++) {
-                            if(i < log.length) {
+                        for (let i = 0; i < 5; i++) {
+                            if (i < log.length) {
                                 trackPanel.innerHTML += log[i] + '<br>';
                             } else {
                                 trackPanel.innerHTML += '&nbsp;<br>';
                             }
                         }
-                        if(autoScroll) {
+                        if (autoScroll) {
                             trackPanel.scrollTop = trackPanel.scrollHeight;
                         }
                     };
 
-                    add('SESSION','开始追踪');
-                    document.addEventListener('click',e=>{clickC++;add('点击',`${e.clientX},${e.clientY}`);},true);
-                    document.addEventListener('wheel',()=>{scrollC++;if(scrollC%5===0) add('滚轮','累计'+scrollC);},{passive:true});
+                    add('SESSION', '开始追踪');
+                    document.addEventListener('click', e => { clickC++;
+                        add('点击', `${e.clientX},${e.clientY}`); }, true);
+                    document.addEventListener('wheel', () => { scrollC++; if (scrollC % 5 === 0) add('滚轮', '累计' +
+                            scrollC); }, { passive: true });
                 }
 
-                function updateTime(){ setVal('time', formatDateTime(new Date())); }
-                updateTime(); setInterval(updateTime,1000);
+                function updateTime() { setVal('time', formatDateTime(new Date())); }
+                updateTime();
+                setInterval(updateTime, 1000);
 
-                const conn=navigator.connection||{};
-                setVal('rtt', conn.rtt!=null ? conn.rtt+'毫秒' : '获取失败');
-                setVal('downlink', conn.downlink!=null ? conn.downlink+'Mbps' : '获取失败');
+                const conn = navigator.connection || {};
+                setVal('rtt', conn.rtt != null ? conn.rtt + '毫秒' : '获取失败');
+                setVal('downlink', conn.downlink != null ? conn.downlink + 'Mbps' : '获取失败');
                 setVal('ect', conn.effectiveType ? (conn.effectiveType === '4g' ? '4G' : conn.effectiveType) : '获取失败');
                 setVal('nettype', conn.type ? mapNetworkType(conn.type) : '获取失败');
                 setVal('savedata', conn.saveData ? '是' : '否');
-                setVal('dlbw', conn.downlink!=null ? conn.downlink+'Mbps' : '获取失败');
-                const upEl=document.getElementById('v-upspeed');
-                if(upEl){ upEl.innerHTML=''; const btn=document.createElement('button'); btn.textContent='测试上行速度'; btn.style.cssText='padding:4px 12px;border-radius:10px;font-size:0.7rem;cursor:pointer;'; btn.onclick=async function(){ btn.disabled=true; try{ const start=performance.now(); await withTimeout(fetch('https://httpbin.org/post',{method:'POST',body:new Uint8Array(200*1024)}),5000); const dur=(performance.now()-start)/1000; upEl.innerHTML='⬆️ '+(200*8/1024/dur).toFixed(1)+' Mbps'; } catch(e){ upEl.innerHTML=e.message==='timeout'?'申请超时':'授权失败'; } }; upEl.appendChild(btn); }
+                setVal('dlbw', conn.downlink != null ? conn.downlink + 'Mbps' : '获取失败');
+                const upEl = document.getElementById('v-upspeed');
+                if (upEl) { upEl.innerHTML = '';
+                    const btn = document.createElement('button');
+                    btn.textContent = '测试上行速度';
+                    btn.style.cssText = 'padding:4px 12px;border-radius:10px;font-size:0.7rem;cursor:pointer;';
+                    btn.onclick = async function() {
+                        btn.disabled = true;
+                        try {
+                            const start = performance.now();
+                            await withTimeout(fetch('https://httpbin.org/post', { method: 'POST', body: new Uint8Array(
+                                    200 * 1024) }), 5000);
+                            const dur = (performance.now() - start) / 1000;
+                            upEl.innerHTML = '⬆️ ' + (200 * 8 / 1024 / dur).toFixed(1) + ' Mbps';
+                        } catch (e) { upEl.innerHTML = e.message === 'timeout' ? '申请超时' : '授权失败'; }
+                    };
+                    upEl.appendChild(btn); }
 
-                setVal('ua', navigator.userAgent); setVal('plat', navigator.platform||'获取失败');
-                const ua=navigator.userAgent; let bver='获取失败';
-                if(ua.includes('Edg/')) bver='Edge '+ua.match(/Edg\/([\d.]+)/)[1];
-                else if(ua.includes('Chrome/')&&!ua.includes('Edg')) bver='Chrome '+ua.match(/Chrome\/([\d.]+)/)[1];
-                else if(ua.includes('Firefox/')) bver='Firefox '+ua.match(/Firefox\/([\d.]+)/)[1];
-                else if(ua.includes('Safari/')&&!ua.includes('Chrome')) bver='Safari '+ua.match(/Version\/([\d.]+)/)[1];
-                setVal('bver', bver); setVal('lang', mapLanguage(navigator.language));
+                setVal('ua', navigator.userAgent);
+                setVal('plat', navigator.platform || '获取失败');
+                const ua = navigator.userAgent;
+                let bver = '获取失败';
+                if (ua.includes('Edg/')) bver = 'Edge ' + ua.match(/Edg\/([\d.]+)/)[1];
+                else if (ua.includes('Chrome/') && !ua.includes('Edg')) bver = 'Chrome ' + ua.match(/Chrome\/([\d.]+)/)[1];
+                else if (ua.includes('Firefox/')) bver = 'Firefox ' + ua.match(/Firefox\/([\d.]+)/)[1];
+                else if (ua.includes('Safari/') && !ua.includes('Chrome')) bver = 'Safari ' + ua.match(/Version\/([\d.]+)/)[1];
+                setVal('bver', bver);
+                setVal('lang', mapLanguage(navigator.language));
 
                 const physicalW = Math.round(screen.width * window.devicePixelRatio);
                 const physicalH = Math.round(screen.height * window.devicePixelRatio);
-                setVal('scr', physicalW+'×'+physicalH);
+                setVal('scr', physicalW + '×' + physicalH);
                 setVal('dpr', devicePixelRatio.toFixed(2));
-                try{ const o=screen.orientation; setVal('orient', o ? o.type+' '+o.angle+'°' : '获取失败'); } catch{ setValError('orient','获取失败'); }
-                setVal('colordepth', screen.colorDepth+'bit');
+                try { const o = screen.orientation;
+                    setVal('orient', o ? o.type + ' ' + o.angle + '°' : '获取失败'); } catch { setValError('orient',
+                        '获取失败'); }
+                setVal('colordepth', screen.colorDepth + 'bit');
                 setVal('tz', mapTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone) || '获取失败');
                 setVal('locale', mapLanguage(navigator.language) || '获取失败');
-                setVal('syslang', (navigator.languages||[]).map(l=>mapLanguage(l)).join(','));
-                setVal('engine', navigator.userAgent.includes('AppleWebKit')?'WebKit/Blink':(navigator.userAgent.includes('Gecko')?'Gecko':'其它'));
+                setVal('syslang', (navigator.languages || []).map(l => mapLanguage(l)).join(','));
+                setVal('engine', navigator.userAgent.includes('AppleWebKit') ? 'WebKit/Blink' : (navigator.userAgent
+                    .includes('Gecko') ? 'Gecko' : '其它'));
 
-                const apiTests={ 'WebGL':()=>!!document.createElement('canvas').getContext('webgl'), 'WebRTC':()=>'mediaDevices' in navigator, 'ServiceWorker':()=>'serviceWorker' in navigator, 'IndexedDB':()=>!!window.indexedDB, 'localStorage':()=>!!window.localStorage, 'sessionStorage':()=>!!window.sessionStorage, 'Canvas':()=>!!document.createElement('canvas').getContext('2d'), 'AudioContext':()=>!!(window.AudioContext||window.webkitAudioContext) };
-                const sup=[],unsup=[];
-                for(const [name,test] of Object.entries(apiTests)){ if(test()) sup.push(name); else unsup.push(name); }
-                setVal('apis', '✅ 支持: '+sup.join(', ')+(unsup.length?'\n❌ 不支持: '+unsup.join(', '):''));
+                const apiTests = { 'WebGL': () => !!document.createElement('canvas').getContext('webgl'),
+                    'WebRTC': () => 'mediaDevices' in navigator, 'ServiceWorker': () => 'serviceWorker' in navigator,
+                    'IndexedDB': () => !!window.indexedDB, 'localStorage': () => !!window.localStorage,
+                    'sessionStorage': () => !!window.sessionStorage, 'Canvas': () => !!document.createElement('canvas')
+                        .getContext('2d'), 'AudioContext': () => !!(window.AudioContext || window
+                        .webkitAudioContext) };
+                const sup = [],
+                    unsup = [];
+                for (const [name, test] of Object.entries(apiTests)) { if (test()) sup.push(name);
+                    else unsup.push(name); }
+                setVal('apis', '✅ 支持: ' + sup.join(', ') + (unsup.length ? '\n❌ 不支持: ' + unsup.join(', ') : ''));
 
-                setTimeout(()=>{
-                    const navEntry=performance.getEntriesByType('navigation')[0];
-                    if(navEntry){
-                        setVal('dns',((navEntry.domainLookupEnd-navEntry.domainLookupStart)/1000).toFixed(1)+'秒');
-                        setVal('tcp',((navEntry.connectEnd-navEntry.connectStart)/1000).toFixed(1)+'秒');
-                        setVal('tls',navEntry.secureConnectionStart>0?((navEntry.connectEnd-navEntry.secureConnectionStart)/1000).toFixed(1)+'秒':'0秒');
-                        setVal('nav',((navEntry.loadEventEnd-navEntry.fetchStart)/1000).toFixed(1)+'秒');
-                        setVal('domload',((navEntry.domContentLoadedEventEnd-navEntry.fetchStart)/1000).toFixed(1)+'秒');
-                        setVal('trans',navEntry.transferSize>0?(navEntry.transferSize/1024).toFixed(2)+'KB':'缓存');
-                        setVal('cache',navEntry.type==='navigate'?(navEntry.transferSize===0?'完全缓存':'网络加载'):navEntry.type);
+                setTimeout(() => {
+                    const navEntry = performance.getEntriesByType('navigation')[0];
+                    if (navEntry) {
+                        setVal('dns', ((navEntry.domainLookupEnd - navEntry.domainLookupStart) / 1000).toFixed(
+                            1) + '秒');
+                        setVal('tcp', ((navEntry.connectEnd - navEntry.connectStart) / 1000).toFixed(1) + '秒');
+                        setVal('tls', navEntry.secureConnectionStart > 0 ? ((navEntry.connectEnd - navEntry
+                            .secureConnectionStart) / 1000).toFixed(1) + '秒' : '0秒');
+                        setVal('nav', ((navEntry.loadEventEnd - navEntry.fetchStart) / 1000).toFixed(1) + '秒');
+                        setVal('domload', ((navEntry.domContentLoadedEventEnd - navEntry.fetchStart) / 1000)
+                            .toFixed(1) + '秒');
+                        setVal('trans', navEntry.transferSize > 0 ? (navEntry.transferSize / 1024).toFixed(2) +
+                            'KB' : '缓存');
+                        setVal('cache', navEntry.type === 'navigate' ? (navEntry.transferSize === 0 ? '完全缓存' :
+                            '网络加载') : navEntry.type);
                     }
-                    setVal('res',performance.getEntriesByType('resource').length+'个');
-                },600);
-                setVal('mime','text/html, application/json, image/png, image/jpeg, image/webp, audio/mpeg, video/mp4');
-                const t=document.createElement('div'); t.style.cssText='position:absolute;visibility:hidden;font-size:1rem;'; t.textContent='T'; document.body.appendChild(t); setVal('fontsize',getComputedStyle(t).fontSize); document.body.removeChild(t);
+                    setVal('res', performance.getEntriesByType('resource').length + '个');
+                }, 600);
+                setVal('mime', 'text/html, application/json, image/png, image/jpeg, image/webp, audio/mpeg, video/mp4');
+                const t = document.createElement('div');
+                t.style.cssText = 'position:absolute;visibility:hidden;font-size:1rem;';
+                t.textContent = 'T';
+                document.body.appendChild(t);
+                setVal('fontsize', getComputedStyle(t).fontSize);
+                document.body.removeChild(t);
             }
 
             document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            function getSummaryData() {
+                const groups = [
+                    { id: 'critical', label: '极高敏感', dot: '#c53030' },
+                    { id: 'high', label: '高敏感', dot: '#dd6b20' },
+                    { id: 'medium', label: '中等敏感', dot: '#d69e2e' },
+                    { id: 'low', label: '低敏感', dot: '#3182ce' },
+                    { id: 'minimal', label: '极低敏感', dot: '#38a169' }
+                ];
+                const result = [];
+                for (const g of groups) {
+                    const items = [];
+                    const cards = cardData[g.id] || [];
+                    for (const c of cards) {
+                        const el = document.getElementById('v-' + c.id);
+                        let val = el ? el.innerText.trim() : '未加载';
+                        items.push({
+                            icon: c.icon,
+                            name: c.l,
+                            value: val || '未加载'
+                        });
+                    }
+                    const perms = permList[g.id] || [];
+                    for (const p of perms) {
+                        const statusEl = document.getElementById('status-' + p.k);
+                        let status = statusEl ? statusEl.innerText.trim() : '⏳ 暂未申请';
+                        items.push({
+                            icon: p.icon,
+                            name: p.n,
+                            value: status
+                        });
+                    }
+                    result.push({
+                        label: g.label,
+                        dot: g.dot,
+                        items: items
+                    });
+                }
+                return result;
+            }
+
+            function renderSummary() {
+                const data = getSummaryData();
+                const body = document.getElementById('summaryBody');
+                let html = '';
+                for (const group of data) {
+                    if (group.items.length === 0) continue;
+                    html += `<div class="group">`;
+                    html +=
+                        `<div class="group-title"><span class="dot" style="background:${group.dot};"></span> ${group.label}</div>`;
+                    for (const item of group.items) {
+                        html +=
+                            `<div class="item"><span class="item-icon"><i class="${item.icon}"></i></span><span class="item-name">${item.name}:</span><span class="item-value">${item.value}</span></div>`;
+                    }
+                    html += `<hr class="group-divider">`;
+                    html += `</div>`;
+                }
+                body.innerHTML = html;
+            }
+
+            function generateTextSummary() {
+                const data = getSummaryData();
+                let lines = [];
+                for (const group of data) {
+                    if (group.items.length === 0) continue;
+                    lines.push(`=== ${group.label} ===`);
+                    for (const item of group.items) {
+                        lines.push(`  ${item.name}: ${item.value}`);
+                    }
+                    lines.push('');
+                }
+                return lines.join('\n');
+            }
+
+            function embedWatermark(canvas, watermarkText) {
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                const encoder = new TextEncoder();
+                const bytes = encoder.encode(watermarkText);
+                const bitArray = [];
+                for (let i = 0; i < bytes.length; i++) {
+                    for (let j = 7; j >= 0; j--) {
+                        bitArray.push((bytes[i] >> j) & 1);
+                    }
+                }
+                const totalBits = bitArray.length;
+                if (totalBits === 0) return canvas;
+                const pixelCount = data.length / 4;
+                if (pixelCount < totalBits) {
+                    return canvas;
+                }
+                for (let i = 0; i < pixelCount; i++) {
+                    const bitIndex = i % totalBits;
+                    const byteIndex = i * 4;
+                    data[byteIndex] = (data[byteIndex] & 0xFE) | bitArray[bitIndex];
+                }
+                ctx.putImageData(imageData, 0, 0);
+                return canvas;
+            }
+
+            function saveScreenshot() {
+                const panel = document.getElementById('summaryPanel');
+                const body = document.getElementById('summaryBody');
+                const overlay = document.getElementById('summaryOverlay');
+
+                const copyBtn = document.getElementById('copySummaryBtn');
+                const saveBtn = document.getElementById('saveScreenshotBtn');
+                copyBtn.disabled = true;
+                saveBtn.disabled = true;
+                saveBtn.textContent = '生成中...';
+
+                const currentTime = new Date();
+                const timeStr = formatDateTime(currentTime);
+
+                const originalOverflow = body.style.overflow;
+                const originalMaxHeight = body.style.maxHeight;
+                body.style.overflow = 'visible';
+                body.style.maxHeight = 'none';
+
+                const originalOverlayAlign = overlay.style.alignItems;
+                const originalOverlayHeight = overlay.style.height;
+                const originalOverlayPadding = overlay.style.padding;
+                overlay.style.alignItems = 'flex-start';
+                overlay.style.height = 'auto';
+                overlay.style.padding = '0';
+
+                const originalPanelTransform = panel.style.transform;
+                panel.style.transform = 'none';
+
+                const originalBorderRadius = panel.style.borderRadius;
+                const originalBackdrop = panel.style.backdropFilter;
+                const originalWebkitBackdrop = panel.style.webkitBackdropFilter;
+                const originalBg = panel.style.backgroundColor;
+                const originalPanelHeight = panel.style.height;
+                const originalPanelMaxHeight = panel.style.maxHeight;
+                const originalPanelOverflow = panel.style.overflow;
+                const originalPanelBorder = panel.style.border;
+
+                const solidBg = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--surface-solid').trim() || '#ffffff';
+
+                panel.style.borderRadius = '0';
+                panel.style.backdropFilter = 'none';
+                panel.style.webkitBackdropFilter = 'none';
+                panel.style.backgroundColor = solidBg;
+                panel.style.border = '0';
+                panel.style.height = 'auto';
+                panel.style.maxHeight = 'none';
+                panel.style.overflow = 'visible';
+
+                const footer = panel.querySelector('.summary-footer');
+                const header = panel.querySelector('.summary-header');
+
+                const originalHeaderBg = header.style.background;
+                const originalBodyBg = body.style.background;
+                const originalFooterBg = footer.style.background;
+                header.style.background = solidBg;
+                body.style.background = solidBg;
+                footer.style.background = solidBg;
+
+                footer.style.display = 'none';
+                header.style.display = 'none';
+
+                const tempHeader = document.createElement('div');
+                tempHeader.style.textAlign = 'center';
+                tempHeader.style.padding = '24px 20px 16px';
+                tempHeader.style.borderBottom = '1px solid var(--border)';
+                tempHeader.style.backgroundColor = 'var(--surface-solid)';
+                tempHeader.innerHTML = `
+                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:700;">
+                        <img src="https://ldy2330785100.github.io/Lidawn-Permission/avatar.jpg" alt="logo" style="width:28px;height:28px;border-radius:6px;">
+                        亦冬权限站
+                    </div>
+                    <div style="font-size:16px;color:var(--text3);margin-top:6px;">亦冬链迹</div>
+                    <div style="font-size:14px;color:var(--text3);margin-top:4px;">${timeStr}</div>
+                `;
+                panel.insertBefore(tempHeader, body);
+
+                const tempFooter = document.createElement('div');
+                tempFooter.style.textAlign = 'center';
+                tempFooter.style.padding = '16px 20px 24px';
+                tempFooter.style.borderTop = '1px solid var(--border)';
+                tempFooter.style.marginTop = '16px';
+                tempFooter.style.backgroundColor = 'var(--surface-solid)';
+                tempFooter.innerHTML = `
+                    <div style="font-size:14px;color:var(--text3);">https://ldy2330785100.github.io/Lidawn-Permission</div>
+                    <div style="font-size:12px;color:var(--text3);margin-top:4px;">© ${new Date().getFullYear()} 亦冬链迹 版权所有</div>
+                `;
+                panel.appendChild(tempFooter);
+
+                html2canvas(panel, {
+                    scale: Math.min(2, window.devicePixelRatio || 1),
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: solidBg,
+                    logging: false,
+                    width: panel.scrollWidth,
+                    height: panel.scrollHeight,
+                }).then(canvas => {
+                    const watermarkText =
+                        `亦冬权限站 | 亦冬链迹 | https://ldy2330785100.github.io/Lidawn-Permission | ${timeStr}`;
+                    const watermarkedCanvas = embedWatermark(canvas, watermarkText);
+                    const link = document.createElement('a');
+                    link.download = `权限结果_${timeStr.replace(/\//g, '').replace(/ /g, '_').replace(/:/g, '')}.png`;
+                    link.href = watermarkedCanvas.toDataURL('image/png');
+                    link.click();
+                }).catch(err => {
+                    console.error(err);
+                    alert('生成截图失败，请重试或检查控制台。');
+                }).finally(() => {
+                    body.style.overflow = originalOverflow;
+                    body.style.maxHeight = originalMaxHeight;
+                    body.style.background = originalBodyBg;
+                    panel.style.borderRadius = originalBorderRadius;
+                    panel.style.backdropFilter = originalBackdrop;
+                    panel.style.webkitBackdropFilter = originalWebkitBackdrop;
+                    panel.style.backgroundColor = originalBg;
+                    panel.style.height = originalPanelHeight;
+                    panel.style.maxHeight = originalPanelMaxHeight;
+                    panel.style.overflow = originalPanelOverflow;
+                    panel.style.transform = originalPanelTransform;
+                    panel.style.border = originalPanelBorder;
+                    overlay.style.alignItems = originalOverlayAlign;
+                    overlay.style.height = originalOverlayHeight;
+                    overlay.style.padding = originalOverlayPadding;
+                    header.style.background = originalHeaderBg;
+                    footer.style.background = originalFooterBg;
+                    footer.style.display = '';
+                    header.style.display = '';
+                    if (tempHeader.parentNode) tempHeader.remove();
+                    if (tempFooter.parentNode) tempFooter.remove();
+                    copyBtn.disabled = false;
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fa-regular fa-image"></i> 保存为长截图';
+                });
+            }
+
+            function showSummary() {
+                const overlay = document.getElementById('summaryOverlay');
+                renderSummary();
+                overlay.classList.add('show');
+                document.body.classList.add('modal-open');
+            }
+
+            function hideSummary() {
+                const overlay = document.getElementById('summaryOverlay');
+                overlay.classList.remove('show');
+                document.body.classList.remove('modal-open');
+            }
+
+            document.getElementById('summaryBtn').addEventListener('click', showSummary);
+            document.getElementById('summaryClose').addEventListener('click', hideSummary);
+            document.getElementById('summaryOverlay').addEventListener('click', function(e) {
+                if (e.target === this) hideSummary();
+            });
+
+            document.getElementById('copySummaryBtn').addEventListener('click', function() {
+                const text = generateTextSummary();
+                navigator.clipboard.writeText(text).then(() => {
+                    this.innerHTML = '<i class="fa-regular fa-check-circle"></i> 已复制';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fa-regular fa-copy"></i> 复制结果';
+                    }, 2000);
+                }).catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try {
+                        document.execCommand('copy');
+                        this.innerHTML = '<i class="fa-regular fa-check-circle"></i> 已复制';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fa-regular fa-copy"></i> 复制结果';
+                        }, 2000);
+                    } catch (e) {}
+                    document.body.removeChild(ta);
+                });
+            });
+
+            document.getElementById('saveScreenshotBtn').addEventListener('click', saveScreenshot);
 
             function init() {
                 buildAllPages();
