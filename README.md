@@ -2,35 +2,19 @@
 
 一个完全运行在浏览器端的**隐私权限检测工具**，帮助用户了解网站在不经授权或主动授权的情况下，能够获取到哪些设备与网络信息。
 
+🌐 **在线体验**：👉[点击跳转](https://ldy2330785100.github.io/Lidawn-Permission/)
+
 <div>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission">
+  <a href="https://ldy2330785100.github.io/Lidawn-Permission/">
     <img src="https://img.shields.io/badge/website-live-brightgreen" alt="Website">
-  </a>
-  <br>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/stargazers">
-    <img src="https://img.shields.io/github/stars/ldy2330785100/Lidawn-Permission" alt="GitHub stars">
-  </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/commits/main">
-    <img src="https://img.shields.io/github/last-commit/ldy2330785100/Lidawn-Permission" alt="GitHub last commit">
-  </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/releases">
-    <img src="https://img.shields.io/github/v/release/ldy2330785100/Lidawn-Permission" alt="GitHub release">
-  </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/releases">
-    <img src="https://img.shields.io/github/release-date/ldy2330785100/Lidawn-Permission" alt="Release date">
-  </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission">
-    <img src="https://img.shields.io/github/repo-size/ldy2330785100/Lidawn-Permission" alt="Repo size">
-  </a>
-  <a href="https://github.com/ldy2330785100/Lidawn-Permission/commits/main">
-    <img src="https://img.shields.io/github/commit-activity/m/ldy2330785100/Lidawn-Permission" alt="Commit activity">
   </a>
   <a href="https://github.com/ldy2330785100/Lidawn-Permission">
     <img src="https://img.shields.io/badge/Maintenance-Active-brightgreen" alt="Maintenance">
   </a>
+  <a href="https://github.com/ldy2330785100/Lidawn-Permission/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-brightgreen" alt="License: CC-BY-NC-SA-4.0">
+  </a>
 </div>
-
-🌐 **在线体验**：[点击跳转](https://ldy2330785100.github.io/Lidawn-Permission/)
 
 ## 📌 功能总览
 
@@ -72,12 +56,35 @@
 - 浏览器 API 覆盖：
   - `fetch`、`WebGL`、`Canvas 2D`、`AudioContext`、`Battery Status`、`Performance`、`Navigator`、`Screen`、`Intl`、`Clipboard`、`MediaDevices`、`Bluetooth`、`USB`、`Serial`、`HID` 等
 
+# 📱 安卓端支持
+
+本网页拟打包为 **Android APK**，提供两种类型：
+
+- **在线版 Online**：~~网页映射至软件，内容与网站同步更新~~（已弃用）
+- **离线版 Offline**：移植网页功能至软件，支持更多权限，完全离线检测，但体验新功能需更新版本
+  - 👉[仓库详情](https://github.com/ldy2330785100/Lidawn-PermApp)
+
 ## 🔗源码
-- [前往下载](https://github.com/ldy2330785100/Lidawn-Permission/releases/)
+
+- 👉[下载](https://github.com/ldy2330785100/Lidawn-Permission/releases/)
+
+- <div>
+  <a href="https://github.com/ldy2330785100/Lidawn-Permission/releases">
+    <img src="https://img.shields.io/github/v/release/ldy2330785100/Lidawn-Permission" alt="GitHub release">
+  </a>
+  <br>
+    <a href="https://github.com/ldy2330785100/Lidawn-Permission/commits/main">
+    <img src="https://img.shields.io/github/last-commit/ldy2330785100/Lidawn-Permission" alt="GitHub last commit">
+  </a>
+  <br>
+  <a href="https://github.com/ldy2330785100/Lidawn-Permission/releases">
+    <img src="https://img.shields.io/github/release-date/ldy2330785100/Lidawn-Permission" alt="Release date">
+  </a>
+</div>
 
 ## 📝 更新日志
 
-- [ChangeLog](https://ldy2330785100.github.io/Lidawn-Permission/changelog.html)
+- 👉[ChangeLog](https://ldy2330785100.github.io/Lidawn-Permission/changelog.html)
 
 ## ⚠️ 声明
 
@@ -93,7 +100,14 @@
 ## 🙏 特别鸣谢
 
 - [GitHub](https://github.com) 提供仓库与 Pages 托管服务
-- [DeepSeek](https://platform.deepseek.com/) 提供技术建议与代码优化
+
+- <div>
+  <a href="https://github.com/ldy2330785100/Lidawn-Permission">
+    <img src="https://img.shields.io/github/repo-size/ldy2330785100/Lidawn-Permission" alt="Repo size">
+  </a>
+  </div>
+
+- [DeepSeek](https://platform.deepseek.com) 提供技术建议与代码优化
 - [Font Awesome](https://fontawesome.com) 提供高质量图标库
 
 ## 💬 讨论群聊
